@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="DeepSeek chat panel">
+  <rect x="4" y="4" width="56" height="56" rx="15" fill="#4d6bfe"/>
+  <path d="M17 19.5h30v18.2H27.4L19.2 44v-6.3H17z" fill="#ffffff" opacity="0.96"/>
+  <path d="M23.6 26.6h16.8M23.6 32h10.2" stroke="#4d6bfe" stroke-width="2.6" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,19 @@
+# 上架条目草稿 / Market entry draft
+#
+# 目标仓库：https://github.com/awesome-dsh-plugin/awesome-dsh-plugin
+# 把本文件复制成 data/plugins/<owner>__<repo>.yml（例如 acme__dsh-deepseek-chat-panel.yml），
+# 替换下面所有 OWNER / REPO，然后向该仓库提 PR。合并后站点与市场会自动收录。
+#
+# 注意：
+# - url 必须与仓库地址完全一致；name 用 owner/repo 形式。
+# - category 必须是合法分类之一，本插件属于 browser（Browser & Web）。
+# - description 必须与实际功能一致（维护者会对着源码核对）；含 ": " 的英文描述必须加引号。
+# - icon 只能是托管在 GitHub 上的 png/jpg/webp（SVG 会被拒），建议用仓库里的 assets/icon-180.png。
+
+url: https://github.com/OWNER/REPO
+name: OWNER/REPO
+category: browser
+description:
+  en: "In-UI DeepSeek chat panel: opens chat.deepseek.com inside the DeepSeek Harness Web UI through a Host-side loopback proxy, and keeps the DeepSeek login across restarts."
+  zh: "在 DeepSeek Harness 网页界面内嵌 chat.deepseek.com 聊天面板：由 Host 端回环代理转发，跨重启保留 DeepSeek 登录态。"
+# icon: https://raw.githubusercontent.com/OWNER/REPO/main/assets/icon-180.png

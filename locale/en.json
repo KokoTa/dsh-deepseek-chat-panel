@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "DeepSeek chat panel",
+    "description": "Opens chat.deepseek.com inside Harness through a loopback Host proxy that keeps the DeepSeek login between restarts."
+  }
+}

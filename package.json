@@ -1,0 +1,61 @@
+{
+  "name": "dsh-deepseek-chat-panel",
+  "version": "0.1.0",
+  "description": "Open chat.deepseek.com inside the DeepSeek Harness Web UI, through a Host-side loopback proxy that keeps the DeepSeek login across restarts.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "src",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "assets",
+    "screenshots.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20",
+    "dsh": ">=0.2.1-rc.1 <0.2.2-0 || >=0.2.2-rc.1 <0.2.3-0"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek",
+    "chat",
+    "panel",
+    "iframe",
+    "proxy",
+    "webui"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-slots"
+      ]
+    }
+  },
+  "icon": "./icon.svg",
+  "scripts": {
+    "dev": "node scripts/dev-proxy.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

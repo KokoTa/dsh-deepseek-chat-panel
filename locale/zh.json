@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "DeepSeek 对话面板",
+    "description": "通过本机 Host 代理在 Harness 内打开 chat.deepseek.com，登录状态在重启后仍然保留。"
+  }
+}
