@@ -106,44 +106,67 @@ export function apply(ctx) {
         scope.webServer.register({
           kind: 'exact',
           path: SYNC_ROUTE,
-          resource: async (request) => {
-            const json = (status, payload) =>
-              new Response(JSON.stringify(payload), {
-                status,
-                headers: {
-                  'content-type': 'application/json; charset=utf-8',
-                  'cache-control': 'no-store',
-                },
+          // A `resource` route only answers GET/HEAD (the web server returns 405 with
+          // `Allow: GET, HEAD` for every other method before the resource runs), so the
+          // token POST has to be a raw `handler` route.
+          handler: async (req, res) => {
+            const json = (status, payload, extra = {}) => {
+              if (res.headersSent) return;
+              const body = JSON.stringify(payload);
+              res.writeHead(status, {
+                'content-type': 'application/json; charset=utf-8',
+                'cache-control': 'no-store',
+                'content-length': Buffer.byteLength(body),
+                ...extra,
               });
-            const method = (request.method ?? 'GET').toUpperCase();
-            if (method === 'OPTIONS') {
-              return new Response(null, { status: 204, headers: { 'cache-control': 'no-store' } });
-            }
-            if (method === 'GET') {
-              return json(200, { ok: true, pending: proxy.pendingLogin, running: proxy.running });
-            }
-            if (method !== 'POST') return json(405, { ok: false, error: 'method not allowed' });
-
-            let text = '';
+              res.end(body);
+            };
             try {
-              text = await request.text();
-            } catch (error) {
-              return json(400, { ok: false, error: `unreadable body: ${error?.message ?? error}` });
-            }
-            if (text.length > SYNC_BODY_LIMIT) return json(413, { ok: false, error: 'body too large' });
-
-            let payload = text.trim();
-            if (payload.startsWith('{') || payload.startsWith('"')) {
-              try {
-                payload = JSON.parse(payload);
-              } catch {
-                // Keep the raw text: normalizeSyncPayload accepts a bare token too.
+              const method = (req.method ?? 'GET').toUpperCase();
+              if (method === 'OPTIONS') {
+                if (!res.headersSent) res.writeHead(204, { allow: 'GET, HEAD, POST, OPTIONS', 'cache-control': 'no-store' });
+                res.end();
+                return;
               }
+              if (method === 'GET' || method === 'HEAD') {
+                json(200, { ok: true, pending: proxy.pendingLogin, running: proxy.running });
+                return;
+              }
+              if (method !== 'POST') {
+                json(405, { ok: false, error: 'method not allowed' }, { allow: 'GET, HEAD, POST, OPTIONS' });
+                return;
+              }
+
+              const chunks = [];
+              let size = 0;
+              for await (const chunk of req) {
+                size += chunk.length;
+                if (size > SYNC_BODY_LIMIT) {
+                  json(413, { ok: false, error: 'body too large' });
+                  req.destroy();
+                  return;
+                }
+                chunks.push(chunk);
+              }
+
+              let payload = Buffer.concat(chunks).toString('utf8').trim();
+              if (payload.startsWith('{') || payload.startsWith('"')) {
+                try {
+                  payload = JSON.parse(payload);
+                } catch {
+                  // Keep the raw text: normalizeSyncPayload accepts a bare token too.
+                }
+              }
+              const queued = proxy.queueLogin(payload);
+              if (!queued.ok) {
+                json(400, queued);
+                return;
+              }
+              log('info', 'queued a login token from the Harness route');
+              json(200, { ok: true, pending: true, url: proxy.url });
+            } catch (error) {
+              json(500, { ok: false, error: `sync route failed: ${error?.message ?? error}` });
             }
-            const queued = proxy.queueLogin(payload);
-            if (!queued.ok) return json(400, queued);
-            log('info', 'queued a login token from the Harness route');
-            return json(200, { ok: true, pending: true, url: proxy.url });
           },
         }),
       'deepseek-chat: sync route',
