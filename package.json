@@ -1,6 +1,6 @@
 {
   "name": "dsh-deepseek-chat-panel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Open chat.deepseek.com inside the DeepSeek Harness Web UI, through a Host-side loopback proxy that keeps the DeepSeek login across restarts.",
   "type": "module",
   "main": "index.js",
