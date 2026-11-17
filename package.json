@@ -24,12 +24,14 @@
     "client.js",
     "src",
     "scripts",
+    "test",
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",
     "assets",
     "screenshots.json",
     "README.md",
+    "docs",
     "LICENSE"
   ],
   "engines": {
@@ -62,9 +64,15 @@
   },
   "icon": "./icon.svg",
   "scripts": {
-    "dev": "node scripts/dev-proxy.mjs"
+    "dev": "node scripts/dev-proxy.mjs",
+    "build": "node scripts/build-client.mjs",
+    "test": "node scripts/test.mjs",
+    "check": "node scripts/check.mjs"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.2"
   }
 }

@@ -1,3 +1,8 @@
+# 启用这个 bundle 时，Harness 会把下面这行插入当前 profile 的 Host 插件列表。
+# 这里只声明要加载哪个 npm 包；端口、状态目录和调试开关从环境变量读取。
+# 不要在这里填 token 或 Cookie，字段详解见 docs/configuration.md。
 - insert:
+    # id 是当前 profile 里这行插件的名字，用于区分和管理插件实例。
     - id: deepseek-chat
+      # name 必须和 package.json 的 name 一致；本地目录名可以不同。
       name: 'dsh-deepseek-chat-panel'
