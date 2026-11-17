@@ -4,6 +4,14 @@
   "description": "Open chat.deepseek.com inside the DeepSeek Harness Web UI, through a Host-side loopback proxy that keeps the DeepSeek login across restarts.",
   "type": "module",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KokoTa/dsh-deepseek-chat-panel.git"
+  },
+  "homepage": "https://github.com/KokoTa/dsh-deepseek-chat-panel#readme",
+  "bugs": {
+    "url": "https://github.com/KokoTa/dsh-deepseek-chat-panel/issues"
+  },
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -15,6 +23,7 @@
     "index.js",
     "client.js",
     "src",
+    "scripts",
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",
